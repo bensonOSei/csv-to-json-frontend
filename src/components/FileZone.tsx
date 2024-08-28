@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { FaFileCsv } from "react-icons/fa";
 import { IoMdCloudUpload } from "react-icons/io";
+import { PrimaryButton } from "./buttons/PrimaryButton";
 
 interface FileProps {
   fileName: string | null;
@@ -18,14 +19,12 @@ export const FileZone: FC<FileProps> = ({ fileName, fileContent }) => {
               <span className="text-blue-800 font-bold">{fileName}</span>
             </div>
 
-            <button
-              type="button"
-              className="px-3 py-1 text-center bg-blue-400 text-slate-50 rounded-md hover:bg-blue-500 transition-all text-sm flex items-center gap-1">
+            <PrimaryButton>
               <span>
                 <IoMdCloudUpload />
               </span>
               <span>Convert</span>
-            </button>
+            </PrimaryButton>
           </>
         ) : (
           <span className="text-sm text-slate-400">No file added yet</span>
