@@ -34,7 +34,7 @@ export const FileZone: FC<FileProps> = ({ fileName, fileContent }) => {
       {fileContent && (
         <div className="mt-4 w-full max-w-lg mx-auto bg-slate-50 rounded-md p-2">
           <h4>File Content</h4>
-          <div className="max-h-72 overflow-y-hidden relative">
+          <div className="max-h-60 overflow-y-hidden relative">
             <pre className="text-xs mt-4 bg-slate-100 p-2 rounded-md">
               {fileContent}
             </pre>

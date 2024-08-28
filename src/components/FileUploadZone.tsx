@@ -21,7 +21,6 @@ export const FileUploadZone = () => {
       reader.readAsText(file, "UTF-8");
       reader.onload = () => {
         setFileContent(reader.result as string);
-        console.log(reader.result);
       }
     });
   };
