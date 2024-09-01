@@ -9,7 +9,7 @@ interface UseApiProps<T> {
   params?: Record<string, any>; // Query parameters
   dependencies?: any[];
   onSuccess?: (data: T) => void;
-  onError?: (error: any) => void;
+  onError?: (error?: any) => void;
 }
 
 interface UseApiResult<T> {
