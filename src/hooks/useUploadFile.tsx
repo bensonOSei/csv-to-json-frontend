@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useApi } from "./useApi";
+import { useApi } from "./UseApi";
 
 const CONVERT_API_URL = "https://csv-json-converter-6vfl.onrender.com/api/csv/convert";
 
@@ -14,7 +14,7 @@ interface UseUploadFileResult {
   refetch: () => void;
   cancelRequest: () => void;
   progress: number;
-  response: object | null;
+  response: any;
 }
 
 export const useUploadFile = ({ file } : UseUploadFileProps ): UseUploadFileResult => {
