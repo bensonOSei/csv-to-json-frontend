@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { useApi } from "./UseApi";
+import { useApi } from "./useApi";
 
-const CONVERT_API_URL = "http://localhost:3000/api/csv/convert";
+const CONVERT_API_URL = "https://csv-json-converter-6vfl.onrender.com/api/csv/convert";
 
 interface UseUploadFileProps {
   file: File | null;
