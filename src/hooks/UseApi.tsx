@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import axios, { AxiosRequestConfig, AxiosResponse, CancelTokenSource } from "axios";
 
 interface UseApiProps<T> {
@@ -18,6 +18,7 @@ interface UseApiResult<T> {
   error: any;
   refetch: () => void;
   cancelRequest: () => void;
+  progress: number;
 }
 
 export function useApi<T>({
@@ -34,12 +35,17 @@ export function useApi<T>({
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<any>(null);
   const [cancelTokenSource, setCancelTokenSource] = useState<CancelTokenSource | null>(null);
+  const [progress, setProgress] = useState<number>(0);
+  const renderCount = useRef(0)
+
 
   const fetchData = useCallback(async () => {
+    console.log("Fetching data...");
     const source = axios.CancelToken.source();
     setCancelTokenSource(source);
     setLoading(true);
     setError(null);
+    setProgress(0);
 
     try {
       const config: AxiosRequestConfig = {
@@ -49,6 +55,14 @@ export function useApi<T>({
         params,
         data,
         cancelToken: source.token,
+        onUploadProgress: (progressEvent) => {
+          const progress = (progressEvent.loaded / (progressEvent.total || 1)) * 50;
+          setProgress(progress);
+        },
+        onDownloadProgress: (progressEvent) => {
+          const progress = 50 + (progressEvent.loaded / (progressEvent.total || 1)) * 50;
+          setProgress(progress);
+        }
       };
 
       const response: AxiosResponse<T> = await axios(config);
@@ -68,10 +82,13 @@ export function useApi<T>({
       }
     } finally {
       setLoading(false);
+      setCancelTokenSource(null); // Clear the cancel token after request completes
     }
   }, [url, method, data, headers, params, onSuccess, onError]);
 
   useEffect(() => {
+    renderCount.current += 1;
+    console.log({ renderCount });
     fetchData();
 
     return () => {
@@ -81,18 +98,19 @@ export function useApi<T>({
     };
   }, dependencies); // Automatically refetch if dependencies change
 
-  const refetch = () => {
+  const refetch = useCallback(() => {
+    console.log("Refetching data...");
     if (cancelTokenSource) {
       cancelTokenSource.cancel("Operation canceled by the user.");
     }
     fetchData();
-  };
+  }, [fetchData, cancelTokenSource]);
 
-  const cancelRequest = () => {
+  const cancelRequest = useCallback(() => {
     if (cancelTokenSource) {
       cancelTokenSource.cancel("Operation canceled by the user.");
     }
-  };
+  }, [cancelTokenSource]);
 
-  return { data: responseData, loading, error, refetch, cancelRequest };
+  return { data: responseData, loading, error, refetch, cancelRequest, progress };
 }

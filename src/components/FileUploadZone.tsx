@@ -6,23 +6,13 @@ import { FileZone } from "./FileZone";
 export const FileUploadZone = () => {
   const [dragOver, setDragOver] = useState(false);
   const [file, setFile] = useState<File | null>(null);
-  const [fileContent, setFileContent] = useState<string | null>(null);
-  const [fileName, setFileName] = useState<string | null>(null);
 
   const onDrop = (acceptedFiles: File[]) => {
     acceptedFiles.forEach((file: File) => {
       // check file size
       if (file.size > 20_000) return;
       setFile(file);
-      setFileName(file.name);
       setDragOver(false);
-
-      const reader = new FileReader();
-      reader.readAsText(file, "UTF-8");
-      reader.onload = () => {
-        setFileContent(reader.result as string);
-        console.log(reader.result);
-      }
     });
   };
 
@@ -57,7 +47,7 @@ export const FileUploadZone = () => {
         </form>
       </div>
 
-      <FileZone fileName={fileName} fileContent={fileContent} />
+      <FileZone file={file} />
     </>
   );
 };
