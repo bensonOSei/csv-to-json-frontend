@@ -10,11 +10,11 @@ interface UseUploadFileProps {
 interface UseUploadFileResult {
   success: boolean;
   loading: boolean;
-  error: any;
+  error: string | null | object;
   refetch: () => void;
   cancelRequest: () => void;
   progress: number;
-  response: any;
+  response: object | null;
 }
 
 export const useUploadFile = ({ file } : UseUploadFileProps ): UseUploadFileResult => {

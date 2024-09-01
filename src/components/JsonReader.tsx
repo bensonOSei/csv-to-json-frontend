@@ -62,9 +62,13 @@ export const JsonReader: FC<JsonReaderProps> = ({ jsonString }) => {
           )}
         </button>
         <button
+          onClick={downloadJson}
+          disabled={downloaded}
           className="flex items-center text-xs p-1 px-2 bg-slate-100 rounded-md hover:bg-slate-200/70 transition-all hover:text-blue-800 text-blue-500/30"
           type="button">
-          <span>Download JSON</span>
+          <span>
+            {downloaded ? "Downloaded!" : "Download"}
+          </span>
           <LuDownload className="ml-1" />
         </button>
       </div>
